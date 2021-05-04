@@ -1,5 +1,4 @@
 import { useReducer } from "react";
-import { act } from "react-dom/test-utils";
 
 /*This component manage the Cart context data and provide 
 it to all the components that will neeed it*/
@@ -17,7 +16,7 @@ const cartReducer = (state, action) => {
       state.totalAmount + action.item.price * action.item.amount;
 
     return {
-      item: updateItems,
+      items: updateItems,
       totalAmount: updatedTotalAmount,
     };
   }
