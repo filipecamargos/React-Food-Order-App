@@ -3,7 +3,7 @@ import { useContext } from "react";
 import classes from "./Cart.module.css";
 
 import Modal from "../UI/Modal";
-import CartContext from "../../store/cart-contex";
+import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
 
 const Cart = (props) => {
@@ -16,12 +16,12 @@ const Cart = (props) => {
 
   //handle to remove an item
   const itemRemoveHandler = id => {
-
+    cartCtx.removeItem(id);
   };
 
   //manage to add an item
   const itemAddHandler = item => {
-
+    cartCtx.addItem({ ...item, amount: 1 });
   };
 
 
@@ -31,7 +31,7 @@ const Cart = (props) => {
       {cartCtx.items.map((item) => (
         <CartItem
           key={item.id}
-          name={item.title}
+          name={item.name}
           amount={item.amount}
           price={item.price}
           onRemove={itemRemoveHandler.bind(null, item.id)}
