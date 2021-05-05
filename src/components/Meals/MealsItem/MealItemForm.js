@@ -4,26 +4,34 @@ import classes from "./MealsForm.module.css";
 
 import Input from "../../UI/Input";
 
+//Form component to be added with the MealItem
 const MealItemForm = (props) => {
-  const [validAmount, setValidAmount] = useState(true);
+  //Set up a validation using state
+  const [amountIsValid, setAmountIsValid] = useState(true);
+  //Create an input ref to be use with the Input for two way biding
   const amountInputRef = useRef();
 
-  const SubmitHandler = (event) => {
+  const submitHandler = (event) => {
     event.preventDefault();
 
     const enteredAmount = amountInputRef.current.value;
-    const endeterdAmountValue = +enteredAmount;
+    const enteredAmountNumber = +enteredAmount;
 
-    if (endeterdAmountValue < 1 || endeterdAmountValue > 6) {
-      setValidAmount(false);
+    //Invalid input checking
+    if (
+      enteredAmount.trim().length === 0 ||
+      enteredAmountNumber < 1 ||
+      enteredAmountNumber > 5
+    ) {
+      setAmountIsValid(false);
       return;
     }
 
-    props.onAddToCart(endeterdAmountValue);
+    props.onAddToCart(enteredAmountNumber);
   };
 
   return (
-    <form className={classes.form} onSubmit={SubmitHandler}>
+    <form className={classes.form} onSubmit={submitHandler}>
       <Input
         ref={amountInputRef}
         label="Amount"
@@ -31,13 +39,13 @@ const MealItemForm = (props) => {
           id: "amount_" + props.id,
           type: "number",
           min: "1",
-          max: "6",
+          max: "5",
           step: "1",
           defaultValue: "1",
         }}
       />
-      <button>Add Meal</button>
-      {!validAmount && <p>Please enter a valid amount!</p>}
+      <button>+ Add</button>
+      {!amountIsValid && <p>Please enter a valid amount (1-5).</p>}
     </form>
   );
 };

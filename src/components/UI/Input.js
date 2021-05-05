@@ -2,6 +2,8 @@ import React from "react";
 
 import classes from "./Input.module.css";
 
+//Customer input to use in forms in the app
+//This input component is configured throught props and ref
 const Input = React.forwardRef((props, ref) => {
   return (
     <div className={classes.input}>

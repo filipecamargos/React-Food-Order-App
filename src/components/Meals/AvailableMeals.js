@@ -30,13 +30,14 @@ const DUMMY_MEALS = [
   },
 ];
 
+//Display the list of meals
 const AvailableMeals = () => {
   const listMeals = DUMMY_MEALS.map((meal) => (
     <MealItem
-      id={meal.id}
       key={meal.id}
-      title={meal.name}
-      detail={meal.description}
+      id={meal.id}
+      name={meal.name}
+      description={meal.description}
       price={meal.price}
     />
   ));

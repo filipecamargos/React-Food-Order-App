@@ -3,10 +3,12 @@ import ReactDom from "react-dom";
 
 import classes from "./Modal.module.css";
 
+//Style the background
 const Backdrop = (props) => {
   return <div className={classes.backdrop} />;
 };
 
+//Set the modelOverley
 const ModalOverlay = (props) => {
   return (
     <div className={classes.modal}>
@@ -15,6 +17,7 @@ const ModalOverlay = (props) => {
   );
 };  
 
+//varible to get the portal that was created in the index.html
 const portal = document.getElementById("overlays");
 
 const Modal = (props) => {

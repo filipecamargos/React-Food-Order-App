@@ -9,10 +9,12 @@ function App() {
   //Manage the cart display
   const [showCart, setShowCart] = useState(false);
 
+  //Show the cart
   const showCartHandler = () => {
     setShowCart(true);
   };
 
+  //Hide the cart
   const closeCartHandler = () => {
     setShowCart(false);
   };

@@ -7,6 +7,7 @@ const defaultCartState = {
   totalAmount: 0,
 };
 
+//Manage the cart with reducer to have more control over the state
 const cartReducer = (state, action) => {
   if (action.type === 'ADD') {
     const updatedTotalAmount =
@@ -58,20 +59,24 @@ const cartReducer = (state, action) => {
   return defaultCartState;
 };
 
+//Cart Provider Component that will make the cart available everywhere through context
 const CartProvider = (props) => {
   const [cartState, dispatchCartAction] = useReducer(
     cartReducer,
     defaultCartState
   );
-
+  
+  //Add and item
   const addItemToCartHandler = (item) => {
     dispatchCartAction({ type: 'ADD', item: item });
   };
 
+  //remove an item
   const removeItemFromCartHandler = (id) => {
     dispatchCartAction({ type: 'REMOVE', id: id });
   };
 
+  //Set the context that will be shared with other components in the app
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
