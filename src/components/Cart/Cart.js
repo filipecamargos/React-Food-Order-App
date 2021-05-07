@@ -50,6 +50,10 @@ const Cart = (props) => {
     setCheckout(true);
   };
 
+  const onOrderCancel = () => {
+    setCheckout(false);
+  }
+
   const modalActions = (
           <div className={classes.actions}>
         <button className={classes["button--alt"]} onClick={props.onClose}>
@@ -65,7 +69,7 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {checkOut && <Checkout />}
+      {checkOut && <Checkout onCancel={onOrderCancel}/>}
       {!checkOut && modalActions}
     </Modal>
   );
