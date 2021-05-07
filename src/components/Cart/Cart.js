@@ -1,12 +1,16 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import classes from "./Cart.module.css";
 
 import Modal from "../UI/Modal";
 import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
+import Checkout from "./Checkout";
 
 const Cart = (props) => {
+  //Manage the checkout form conditionally
+  const [checkOut, setCheckout] = useState(false);
+
   //Context to get the cart used in all the app
   const cartCtx = useContext(CartContext);
 
@@ -41,6 +45,19 @@ const Cart = (props) => {
     </ul>
   );
 
+  //Handler the order by showing the checkout form
+  const orderHandler = () => {
+    setCheckout(true);
+  };
+
+  const modalActions = (
+          <div className={classes.actions}>
+        <button className={classes["button--alt"]} onClick={props.onClose}>
+          Close
+        </button>
+        {hasItems && <button className={classes.button} onClick={orderHandler}>Oder</button>}
+      </div>
+  )
   return (
     <Modal>
       {cartItems}
@@ -48,12 +65,8 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      <div className={classes.actions}>
-        <button className={classes["button--alt"]} onClick={props.onClose}>
-          Close
-        </button>
-        {hasItems && <button className={classes.button}>Oder</button>}
-      </div>
+      {checkOut && <Checkout />}
+      {!checkOut && modalActions}
     </Modal>
   );
 };

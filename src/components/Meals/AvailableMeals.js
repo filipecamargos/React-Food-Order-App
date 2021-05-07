@@ -8,13 +8,24 @@ import MealItem from "./MealsItem/MealItem";
 
 //Display the list of meals
 const AvailableMeals = () => {
+  //The component states
   const [meals, setMeals] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
+  const [httpError, setHttpError] = useState();
 
+  //Use effect get run when the component is loaded
   useEffect(() => {
+    //Function to fecth the data
     const fetchMeals = async () => {
+      //Fecth the data
       const response = await fetch(`${config.db}meals.json`);
       const responseData = await response.json();
-      console.log(responseData)
+
+      //Check for errors
+      if (!response.ok) {
+        throw new Error("Sorry something went wrong!");
+      }
+
       const loadedMeals = [];
 
       for (const key in responseData) {
@@ -27,11 +38,34 @@ const AvailableMeals = () => {
       }
 
       setMeals(loadedMeals);
+      setIsloading(false);
     };
 
-    fetchMeals();
+    //Try to fecth
+    fetchMeals().catch((error) => {
+      setIsloading(false);
+      setHttpError(error.message);
+    });
   }, []);
 
+  //Set the content based on condition
+  if (isLoading) {
+    return (
+      <section className={classes.MealsLoading}>
+        <p>Loading...</p>
+      </section>
+    );
+  }
+
+  if (httpError) {
+    return (
+      <section className={classes.MealsLoading}>
+        <p>{httpError}</p>
+      </section>
+    );
+  }
+
+  //Set the meal list
   const mealsList = meals.map((meal) => (
     <MealItem
       key={meal.id}
