@@ -2,9 +2,11 @@ import { useRef, useState } from "react";
 
 import classes from "./Checkout.module.css";
 
+//Validation functions to be reused
 const isEmpty = (value) => value.trim() === "";
 const isFiveChars = (value) => value.trim().length === 5;
 
+//Checkout Component -----
 const Checkout = (props) => {
   const [formInputsValidity, setFormInputsValidity] = useState({
     name: true,
@@ -13,24 +15,29 @@ const Checkout = (props) => {
     postalCode: true,
   });
 
+  //Ref for the data entered by the user
   const nameInputRef = useRef();
   const streetInputRef = useRef();
   const postalCodeInputRef = useRef();
   const cityInputRef = useRef();
 
+  //Confirm the order handler
   const confirmHandler = (event) => {
     event.preventDefault();
 
+    //Get all the data entered by the user
     const enteredName = nameInputRef.current.value;
     const enteredStreet = streetInputRef.current.value;
     const enteredPostalCode = postalCodeInputRef.current.value;
     const enteredCity = cityInputRef.current.value;
 
+    //Check the validation
     const enteredNameIsValid = !isEmpty(enteredName);
     const enteredStreetIsValid = !isEmpty(enteredStreet);
     const enteredCityIsValid = !isEmpty(enteredCity);
     const enteredPostalCodeIsValid = isFiveChars(enteredPostalCode);
 
+    //Set the form validity based on the validity for the inputs
     setFormInputsValidity({
       name: enteredNameIsValid,
       street: enteredStreetIsValid,
@@ -38,6 +45,7 @@ const Checkout = (props) => {
       postalCode: enteredPostalCodeIsValid,
     });
 
+    //Check the form is valid
     const formIsValid =
       enteredNameIsValid &&
       enteredStreetIsValid &&
@@ -47,8 +55,17 @@ const Checkout = (props) => {
     if (!formIsValid) {
       return;
     }
+
+    //call the submit method to handle the HTTP
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredCity,
+      postalCode: enteredPostalCode
+    })
   };
 
+  //Set the style based on the validity
   const nameControlClasses = `${classes.control} ${
     formInputsValidity.name ? "" : classes.invalid
   }`;
@@ -62,6 +79,7 @@ const Checkout = (props) => {
     formInputsValidity.city ? "" : classes.invalid
   }`;
 
+  //Return the form to be displyed
   return (
     <form className={classes.form} onSubmit={confirmHandler}>
       <div className={nameControlClasses}>

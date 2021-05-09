@@ -19,15 +19,14 @@ const Cart = (props) => {
   const hasItems = cartCtx.items.length > 0;
 
   //handle to remove an item
-  const itemRemoveHandler = id => {
+  const itemRemoveHandler = (id) => {
     cartCtx.removeItem(id);
   };
 
   //manage to add an item
-  const itemAddHandler = item => {
+  const itemAddHandler = (item) => {
     cartCtx.addItem({ ...item, amount: 1 });
   };
-
 
   //Manage to display the items by maping
   const cartItems = (
@@ -50,18 +49,30 @@ const Cart = (props) => {
     setCheckout(true);
   };
 
+  //Handle the cancel of the order back to the cart
   const onOrderCancel = () => {
     setCheckout(false);
-  }
+  };
 
+  //Handle the HTTP POST Request to submit the order
+  const submitOrderHandler = (userData) => {
+    console.log(userData);
+  };
+
+  //Modal to handle the btn actions dynamicly
   const modalActions = (
-          <div className={classes.actions}>
-        <button className={classes["button--alt"]} onClick={props.onClose}>
-          Close
+    <div className={classes.actions}>
+      <button className={classes["button--alt"]} onClick={props.onClose}>
+        Close
+      </button>
+      {hasItems && (
+        <button className={classes.button} onClick={orderHandler}>
+          Oder
         </button>
-        {hasItems && <button className={classes.button} onClick={orderHandler}>Oder</button>}
-      </div>
-  )
+      )}
+    </div>
+  );
+
   return (
     <Modal>
       {cartItems}
@@ -69,7 +80,7 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {checkOut && <Checkout onCancel={onOrderCancel}/>}
+      {checkOut && <Checkout onCancel={onOrderCancel} onConfirm={submitOrderHandler} />}
       {!checkOut && modalActions}
     </Modal>
   );
