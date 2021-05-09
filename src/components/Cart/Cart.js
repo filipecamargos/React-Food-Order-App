@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { config } from "../../config";
 
 import classes from "./Cart.module.css";
 
@@ -56,7 +57,13 @@ const Cart = (props) => {
 
   //Handle the HTTP POST Request to submit the order
   const submitOrderHandler = (userData) => {
-    console.log(userData);
+    fetch(`${config.db}orders.json`, {
+      method: 'POST',
+      body: JSON.stringify({
+        user:userData,
+        orderedItems: cartCtx.items,
+      })
+    })
   };
 
   //Modal to handle the btn actions dynamicly
